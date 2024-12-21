@@ -12,20 +12,18 @@
         height: 100%;
         width: 100%;
         overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #1F1F20;
       }
       #unity-canvas {
-        width: auto;
-        height: 100vh;
-        aspect-ratio: 650/900;
+        width: 650px;
+        height: 900px;
+        max-width: 100vw;
+        max-height: 100vh;
+        object-fit: contain;
         background: #1F1F20;
-        margin: 0 auto;
-        display: block;
-      }
-      @media (max-aspect-ratio: 650/900) {
-        #unity-canvas {
-          width: 100vw;
-          height: auto;
-        }
       }
     </style>
   </head>
@@ -33,27 +31,7 @@
     <canvas id="unity-canvas" width=650 height=900></canvas>
     <script src="Build/FartH.loader.js"></script>
     <script>
-      const canvas = document.querySelector("#unity-canvas");
-      
-      // Set initial size
-      function resizeCanvas() {
-        const aspectRatio = 650/900;
-        const windowRatio = window.innerWidth / window.innerHeight;
-        
-        if (windowRatio < aspectRatio) {
-          canvas.style.width = '100vw';
-          canvas.style.height = 'auto';
-        } else {
-          canvas.style.width = 'auto';
-          canvas.style.height = '100vh';
-        }
-      }
-
-      // Listen for window resize
-      window.addEventListener('resize', resizeCanvas);
-      resizeCanvas();
-
-      createUnityInstance(canvas, {
+      createUnityInstance(document.querySelector("#unity-canvas"), {
         dataUrl: "Build/FartH.data",
         frameworkUrl: "Build/FartH.framework.js",
         codeUrl: "Build/FartH.wasm",
@@ -61,7 +39,8 @@
         companyName: "FART",
         productName: "Space Fart",
         productVersion: "1.0",
-        matchWebGLToCanvasSize: true,
+        // Keep the original canvas size to prevent performance issues
+        matchWebGLToCanvasSize: false,
       });
     </script>
   </body>
